@@ -40,6 +40,7 @@ Trabalhe normalmente. Quando a tarefa 1 for mergeada no develop:
 git checkout feature/MW-XXXXX
 git fetch origin
 git rebase origin/develop
+git push --force-with-lease
 ```
 
 O rebase vai replantar seus commits em cima do develop atualizado (que já inclui a tarefa 1).
