@@ -8,4 +8,4 @@
 - [Ctrl+Click / botão do meio abre em nova aba](../../tasks/2026-10-05_MW-89270_ctrl-click-nova-aba/README.md) · [MW-89270](https://meagil.atlassian.net/browse/MW-89270) · melhoria-ux · front
 
 ## Login Hipster
-- Melhorias visuais na tela de switch de conta (sem task registrada) · melhoria-ux · front
+- [Melhorias na tela de troca de conta](../../tasks/2026-10-01_MW-90480_tela-troca-de-conta/README.md) · [MW-90480](https://meagil.atlassian.net/browse/MW-90480) · melhoria-ux · front
