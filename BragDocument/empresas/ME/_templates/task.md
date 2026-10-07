@@ -5,7 +5,7 @@ ticket_url: <link do ticket>
 mr:
   - <link do MR>  # um por repo (front, hub...)
 projeto: <nome do projeto>
-tipo: feature | bug | melhoria-ux | refactor | tech-debt
+tipo: feature | bug | melhoria-ux | refactor | tech-debt | testes
 camada: [front, bff, back]
 ---
 

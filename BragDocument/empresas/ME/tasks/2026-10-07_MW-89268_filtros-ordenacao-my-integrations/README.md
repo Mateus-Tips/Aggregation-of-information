@@ -1,5 +1,5 @@
 ---
-data: 2026-10-06
+data: 2026-10-07
 ticket: MW-89268
 ticket_url: https://meagil.atlassian.net/browse/MW-89268
 mr:
