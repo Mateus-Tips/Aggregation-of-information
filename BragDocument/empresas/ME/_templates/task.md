@@ -2,7 +2,8 @@
 data: YYYY-MM-DD
 ticket: MW-XXXXX
 ticket_url: <link do ticket>
-mr: <link do MR>
+mr:
+  - <link do MR>  # um por repo (front, hub...)
 projeto: <nome do projeto>
 tipo: feature | bug | melhoria-ux | refactor | tech-debt
 camada: [front, bff, back]
@@ -32,5 +33,6 @@ O que mudou pro usuário ou pro time.
 (opcional)
 
 ## Imagens
+Print local na pasta da task (embed) ou link pro upload do MR.
 ![antes](antes.png)
 ![depois](depois.png)
