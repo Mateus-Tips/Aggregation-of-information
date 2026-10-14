@@ -6,7 +6,7 @@ mr:
   - <link do MR>  # um por repo (front, hub...)
 projeto: <nome do projeto>
 tipo: feature | bug | melhoria-ux | refactor | tech-debt | testes | observabilidade
-camada: [front, bff, back]
+camada: [front, bff, back, infra]
 ---
 
 # Título curto
