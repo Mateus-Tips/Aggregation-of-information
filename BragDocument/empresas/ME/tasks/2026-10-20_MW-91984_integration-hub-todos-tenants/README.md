@@ -4,7 +4,7 @@ ticket: MW-91984
 ticket_url: https://meagil.atlassian.net/browse/MW-91984
 mr:
   - https://gitlab.miisy.me/partner-ecosystem/partner-portal/-/merge_requests/519
-projeto: Partner Portal
+projeto: Partner Portal (iPaaS)
 tipo: feature
 camada: [front, bff]
 ---

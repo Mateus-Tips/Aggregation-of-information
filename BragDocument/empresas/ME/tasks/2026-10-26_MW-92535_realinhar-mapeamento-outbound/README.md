@@ -4,7 +4,7 @@ ticket: MW-92535
 ticket_url: https://meagil.atlassian.net/browse/MW-92535
 mr:
   - https://gitlab.miisy.me/partner-ecosystem/partner-portal/-/merge_requests/526
-projeto: Partner Portal
+projeto: Partner Portal (iPaaS)
 tipo: bug
 camada: [front]
 ---
