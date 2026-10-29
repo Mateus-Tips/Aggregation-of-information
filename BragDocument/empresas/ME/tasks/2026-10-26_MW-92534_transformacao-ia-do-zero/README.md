@@ -27,7 +27,7 @@ Deixar a geração de transformação previsível e o modal mais fácil de usar.
 - **`MappingTransformModal` (foco e hierarquia):** foco no prompt ao abrir, fora do modo leitura. Prompt e expressão são os únicos campos editáveis: o prompt fica em destaque e a expressão fica compacta, em monospace e sem roxo. A prévia de entrada e saída virou um painel somente leitura, e os rótulos saíram do uppercase.
 - **`MappingCanvas`:** o badge aplica `setHighlight` no `mouseenter` (mesmo caminho do hover da linha) e limpa no `mouseleave`. Ganhou `data-cy="mapping-transform-badge"`.
 - **Testes:** request sem `currentExpression` e com `sourceField` (origem simples, várias origens e sem origem), foco no prompt e hover do badge.
-- **Contrato:** depende do `sourceField` do integration-hub (MW-92533). A ordem de deploy é livre, porque o .NET ignora propriedade desconhecida.
+- **Contrato:** depende do `sourceField` do integration-hub (MW-92533, integration-hub !289). A ordem de deploy é livre, porque o .NET ignora propriedade desconhecida.
 
 ## Onde
 partner-portal: `MappingTransformModal.vue`, `MappingCanvas.vue`
