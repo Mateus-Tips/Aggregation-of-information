@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review 03.11.2026</title>
+
+    <!-- Fonts: Archivo (display) + Nunito (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Change these to change the whole look
+           =========================================== */
+        :root {
+            --ink: #0d0d0d;
+            --paper: #ffffff;
+            --red: #ff3300;
+            --muted: #6b6b6b;
+            --grid-line: #efefef;
+
+            --stage-bg: #161616;
+            --slide-bg: var(--paper);
+
+            --font-display: 'Archivo', sans-serif;
+            --font-body: 'Nunito', sans-serif;
+
+            --pad-x: 160px;
+            --pad-top: 120px;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.7s;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ===========================================
+           FIXED 16:9 STAGE: MANDATORY BASE STYLES
+           (full contents of viewport-base.css)
+           =========================================== */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            display: block;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide.active,
+        .slide.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        img,
+        video,
+        canvas,
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .deck-controls {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        @media print {
+            html,
+            body {
+                width: 1920px;
+                height: auto;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-viewport {
+                position: static;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-stage {
+                position: static;
+                width: auto;
+                height: auto;
+                transform: none !important;
+                background: none;
+            }
+
+            .slide {
+                position: relative;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                width: 1920px;
+                height: 1080px;
+                break-after: page;
+                page-break-after: always;
+            }
+
+            .slide:last-child {
+                break-after: auto;
+                page-break-after: auto;
+            }
+
+            .deck-controls {
+                display: none !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+        }
+
+        /* ===========================================
+           SLIDE BASE (Swiss grid)
+           12 visible columns of 160px on every light slide
+           =========================================== */
+        .slide {
+            font-family: var(--font-body);
+            color: var(--ink);
+            background-color: var(--paper);
+            background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px);
+            background-size: 160px 100%;
+        }
+
+        .slide.dark {
+            color: var(--paper);
+            background-color: var(--ink);
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        }
+
+        .slide.red {
+            color: var(--paper);
+            background-color: var(--red);
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+        }
+
+        .inner {
+            position: absolute;
+            left: var(--pad-x);
+            right: var(--pad-x);
+            top: var(--pad-top);
+            bottom: 140px;
+        }
+
+        /* ===========================================
+           SLIDE CHROME (kicker + footer)
+           =========================================== */
+        .kicker {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 26px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 36px;
+        }
+
+        .kicker::before {
+            content: "";
+            width: 22px;
+            height: 22px;
+            background: var(--red);
+        }
+
+        .dark .kicker,
+        .red .kicker { color: var(--paper); }
+        .red .kicker::before { background: var(--paper); }
+
+        .footer {
+            position: absolute;
+            left: var(--pad-x);
+            right: var(--pad-x);
+            bottom: 56px;
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 20px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-top: 2px solid currentColor;
+            padding-top: 18px;
+        }
+
+        .dark .footer { color: rgba(255, 255, 255, 0.5); }
+        .red .footer { color: rgba(255, 255, 255, 0.75); }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1, h2, h3, .stat-num, .big-num {
+            font-family: var(--font-display);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+        }
+
+        h1 { font-size: 180px; line-height: 0.9; }
+        h2 { font-size: 96px; line-height: 0.98; margin-bottom: 64px; }
+        h3 { font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 14px; }
+
+        p, li { font-size: 36px; line-height: 1.35; }
+
+        .muted { color: var(--muted); }
+        .tag {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 22px;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+        }
+
+        .dark .tag, .red .tag { color: rgba(255, 255, 255, 0.65); }
+        .accent { color: var(--red); }
+
+        /* ===========================================
+           ANIMATIONS
+           Triggered by .visible on the active slide
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal { opacity: 1; transform: none; }
+
+        .slide.visible .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .slide.visible .reveal:nth-child(2) { transition-delay: 0.15s; }
+        .slide.visible .reveal:nth-child(3) { transition-delay: 0.25s; }
+        .slide.visible .reveal:nth-child(4) { transition-delay: 0.35s; }
+        .slide.visible .reveal:nth-child(5) { transition-delay: 0.45s; }
+
+        .block-in {
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.9s var(--ease-out-expo);
+        }
+
+        .slide.visible .block-in { transform: scaleY(1); }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-block {
+            position: absolute;
+            right: 160px;
+            top: 0;
+            width: 480px;
+            height: 640px;
+            background: var(--red);
+        }
+
+        .title-block span {
+            position: absolute;
+            left: 40px;
+            bottom: 36px;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 120px;
+            color: var(--paper);
+            letter-spacing: -0.04em;
+        }
+
+        .title-block em {
+            display: block;
+            font-style: normal;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .title-lede { margin-top: 56px; font-size: 40px; }
+
+        .fronts {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            display: flex;
+            gap: 64px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        .fronts span::before { content: "■ "; color: var(--red); }
+
+        /* ===========================================
+           OVERVIEW / STAT GRIDS
+           =========================================== */
+        .cols-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 4px solid var(--ink);
+        }
+
+        .cols-3 > div {
+            padding: 36px 48px 0 0;
+        }
+
+        .cols-3 > div + div {
+            padding-left: 48px;
+            border-left: 2px solid var(--ink);
+        }
+
+        .stat-num {
+            font-size: 168px;
+            line-height: 0.95;
+            color: var(--red);
+            margin-bottom: 20px;
+            white-space: nowrap;
+        }
+
+        .stat-num.small { font-size: 132px; }
+
+        .stat-label {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 40px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .cols-3 p { font-size: 30px; }
+
+        /* ===========================================
+           LIST + IMAGE SPLIT
+           =========================================== */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 760px;
+            gap: 96px;
+            align-items: start;
+        }
+
+        .split h2 { font-size: 88px; }
+        .split.narrow-img { grid-template-columns: 1fr 600px; }
+
+        .items { list-style: none; }
+
+        .items li {
+            position: relative;
+            padding: 26px 0 26px 72px;
+            border-top: 2px solid var(--ink);
+        }
+
+        .items li:last-child { border-bottom: 2px solid var(--ink); }
+
+        .items li::before {
+            content: attr(data-n);
+            position: absolute;
+            left: 0;
+            top: 30px;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 34px;
+            color: var(--red);
+        }
+
+        .items .tag { display: block; margin-top: 6px; }
+
+        figure { margin: 0; }
+
+        .shot {
+            display: block;
+            width: 100%;
+            border: 3px solid var(--ink);
+            box-shadow: 18px 18px 0 var(--red);
+            background: var(--paper);
+        }
+
+        figcaption {
+            margin-top: 36px;
+            font-size: 26px;
+            color: var(--muted);
+        }
+
+        /* ===========================================
+           LIVE DEMO SLIDES (dark)
+           =========================================== */
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 28px;
+            border: 3px solid var(--red);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 30px;
+            letter-spacing: 0.16em;
+            color: var(--red);
+            margin-bottom: 64px;
+        }
+
+        .live-pill::before {
+            content: "";
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        .live-title { font-size: 260px; line-height: 0.85; margin-bottom: 72px; }
+
+        .live-points { list-style: none; }
+        .live-points li { font-size: 40px; padding: 8px 0; }
+        .live-points li::before { content: "→ "; color: var(--red); font-weight: 700; }
+
+        /* ===========================================
+           BIG NUMBER SLIDE (Identity)
+           =========================================== */
+        .big-row {
+            display: grid;
+            grid-template-columns: 820px 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 72px;
+        }
+
+        .big-num {
+            font-size: 380px;
+            line-height: 0.8;
+            color: var(--red);
+        }
+
+        .big-row p { font-size: 50px; line-height: 1.2; font-weight: 600; }
+
+        .pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            border-top: 4px solid var(--ink);
+            padding-top: 32px;
+        }
+
+        .pair p { font-size: 32px; }
+
+        /* ===========================================
+           STATEMENT SLIDE (iPaaS)
+           =========================================== */
+        .statement { font-size: 150px; line-height: 0.92; margin-bottom: 64px; max-width: 1500px; }
+        .statement-sub { font-size: 42px; max-width: 1200px; }
+
+        /* ===========================================
+           TWO SCREENSHOTS
+           =========================================== */
+        .two-shots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+        }
+
+        .two-shots h2 { grid-column: 1 / -1; margin-bottom: 8px; font-size: 80px; }
+        .two-shots .shot { height: 560px; object-fit: cover; object-position: top left; }
+        .two-shots figcaption { color: var(--ink); font-size: 28px; }
+        .two-shots figcaption b { color: var(--red); font-family: var(--font-display); }
+
+        /* ===========================================
+           CLOSING SLIDE (red)
+           =========================================== */
+        .close-list { list-style: none; margin-bottom: 80px; }
+
+        .close-list li {
+            font-size: 42px;
+            padding: 22px 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .close-list li b { font-family: var(--font-display); font-weight: 800; }
+
+        .close-q { font-size: 200px; line-height: 0.9; }
+
+        /* ===========================================
+           DECK CHROME (outside the stage)
+           =========================================== */
+        .progress {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 5px;
+            background: var(--red);
+            z-index: 1000;
+            transition: width 0.4s var(--ease-out-expo);
+        }
+
+        .deck-controls {
+            font-family: var(--font-display);
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.55);
+            background: rgba(0, 0, 0, 0.45);
+            padding: 6px 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+
+        /* ===========================================
+           INLINE EDITING
+           Hover the top-left corner or press E
+           =========================================== */
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            background: var(--red);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .editing [contenteditable="true"] {
+            outline: 2px dashed rgba(255, 51, 0, 0.6);
+            outline-offset: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="edit-hotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Editar texto (E)" aria-label="Editar texto">✎</button>
+
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- === 1. TITLE === -->
+            <section class="slide active">
+                <div class="title-block block-in"><span>30<em>entregas</em></span></div>
+                <div class="inner">
+                    <div class="kicker reveal">Review de entregas</div>
+                    <h1 class="reveal">Review<br>03.11.2026</h1>
+                    <p class="title-lede muted reveal">Período 07/10 → 03/11 · Mateus Lopes</p>
+                    <div class="fronts reveal">
+                        <span>Login Hipster</span>
+                        <span>Partner Portal (iPaaS)</span>
+                        <span>ME Identity</span>
+                    </div>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>01 / 13</span></div>
+            </section>
+
+            <!-- === 2. OVERVIEW === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">Visão geral</div>
+                    <h2 class="reveal">30 entregas em 3 frentes</h2>
+                    <div class="cols-3 reveal">
+                        <div>
+                            <div class="stat-num">16</div>
+                            <div class="stat-label">Login Hipster</div>
+                            <p class="muted">Qualidade, segurança e observabilidade</p>
+                        </div>
+                        <div>
+                            <div class="stat-num">12</div>
+                            <div class="stat-label">Partner Portal (iPaaS)</div>
+                            <p class="muted">Integration Hub aberto e mapeamento com IA</p>
+                        </div>
+                        <div>
+                            <div class="stat-num">2</div>
+                            <div class="stat-label">ME Identity</div>
+                            <p class="muted">Menos ruído nos logs e métricas de negócio</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>02 / 13</span></div>
+            </section>
+
+            <!-- === 3. LOGIN: TEST NUMBERS === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">01 — Login Hipster</div>
+                    <h2 class="reveal">De quase sem teste<br>pra protegido na CI</h2>
+                    <div class="cols-3 reveal">
+                        <div>
+                            <div class="stat-num small">18→97%</div>
+                            <div class="stat-label">Cobertura de linhas</div>
+                            <p class="muted">97,29% com testes unitários</p>
+                        </div>
+                        <div>
+                            <div class="stat-num small">0→65</div>
+                            <div class="stat-label">Testes E2E</div>
+                            <p class="muted">Playwright, 3 execuções seguidas sem falha</p>
+                        </div>
+                        <div>
+                            <div class="stat-num small">80%</div>
+                            <div class="stat-label">Trava na CI</div>
+                            <p class="muted">MR que derruba a cobertura não passa</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer"><span>MW-91265 a MW-91272 · MW-91398</span><span>03 / 13</span></div>
+            </section>
+
+            <!-- === 4. LOGIN: TESTS PAID OFF === -->
+            <section class="slide">
+                <div class="inner split">
+                    <div>
+                        <div class="kicker reveal">01 — Login Hipster</div>
+                        <h2 class="reveal">Os testes já se pagaram</h2>
+                        <ul class="items reveal">
+                            <li data-n="01">Cadastro deixava criar conta sem validar o SMS<span class="tag">MW-91266</span></li>
+                            <li data-n="02">Duas XSS: <code>/email</code> e <code>/redirect</code><span class="tag">MW-91677</span></li>
+                            <li data-n="03">Troca de conta pelo teclado, no mobile e no leitor de tela<span class="tag">MW-91677</span></li>
+                        </ul>
+                    </div>
+                    <figure class="reveal">
+                        <img class="shot" src="assets/xss-texto.png" alt="Tela de login mostrando um payload HTML como texto comum">
+                        <figcaption>Payload HTML no username agora aparece como texto</figcaption>
+                    </figure>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>04 / 13</span></div>
+            </section>
+
+            <!-- === 5. LIVE: SONAR === -->
+            <section class="slide dark">
+                <div class="inner">
+                    <div class="live-pill reveal">AO VIVO</div>
+                    <h1 class="live-title reveal">Sonar</h1>
+                    <ul class="live-points reveal">
+                        <li>Login zerado: bugs, code smells e hotspot</li>
+                        <li>Chave i18n sem tradução quebra a CI</li>
+                    </ul>
+                </div>
+                <div class="footer"><span>MW-91959 · MW-92420</span><span>05 / 13</span></div>
+            </section>
+
+            <!-- === 6. OBSERVABILITY: LOGIN === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">02 — Observabilidade</div>
+                    <h2 class="reveal">Onde o usuário trava<br>e por que falha</h2>
+                    <div class="cols-3 reveal">
+                        <div>
+                            <h3>Eventos em todas as jornadas</h3>
+                            <p class="muted">Login, SSO, troca de conta, cadastro, senha e convite, com motivo da falha</p>
+                            <p class="tag">MW-91273 · MW-91274</p>
+                        </div>
+                        <div>
+                            <h3>Sem dado pessoal</h3>
+                            <p class="muted">Email, username e tokens fora da telemetria</p>
+                            <p class="tag">MW-91954</p>
+                        </div>
+                        <div>
+                            <h3>Dashboard no Grafana</h3>
+                            <p class="muted">Funis, falhas por motivo, saúde e Web Vitals</p>
+                            <p class="tag">MW-91275</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>06 / 13</span></div>
+            </section>
+
+            <!-- === 7. LIVE: GRAFANA === -->
+            <section class="slide dark">
+                <div class="inner">
+                    <div class="live-pill reveal">AO VIVO</div>
+                    <h1 class="live-title reveal">Grafana</h1>
+                    <ul class="live-points reveal">
+                        <li>Dashboard do Login Hipster</li>
+                        <li>Jornada do Usuário · Saúde · Performance</li>
+                    </ul>
+                </div>
+                <div class="footer"><span>MW-91275</span><span>07 / 13</span></div>
+            </section>
+
+            <!-- === 8. IDENTITY === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">02 — ME Identity</div>
+                    <div class="big-row reveal">
+                        <div class="big-num">97%</div>
+                        <p>dos logs de Error do Identity em prod vinham de um único webhook</p>
+                    </div>
+                    <div class="pair reveal">
+                        <div>
+                            <h3>Webhook de expirar convite</h3>
+                            <p class="muted">Ignora convite que não está mais pendente: 202 em vez de 422 e sem 10 retries</p>
+                            <p class="tag">MW-92454</p>
+                        </div>
+                        <div>
+                            <h3>Métricas de negócio</h3>
+                            <p class="muted">Usuário criado, atualizado etc. chegam no Prometheus; <code>/metrics</code> duplicado saiu</p>
+                            <p class="tag">MW-92453</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>08 / 13</span></div>
+            </section>
+
+            <!-- === 9. iPaaS: STATEMENT === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">03 — Partner Portal (iPaaS)</div>
+                    <h1 class="statement reveal">Integration Hub aberto pra <span class="accent">todos</span> os parceiros</h1>
+                    <p class="statement-sub muted reveal">Saiu a lista de tenants do código. Liberar um parceiro não precisa mais de deploy.</p>
+                </div>
+                <div class="footer"><span>MW-91984</span><span>09 / 13</span></div>
+            </section>
+
+            <!-- === 10. iPaaS: AI MAPPING === -->
+            <section class="slide">
+                <div class="inner split narrow-img">
+                    <div>
+                        <div class="kicker reveal">03 — Partner Portal (iPaaS)</div>
+                        <h2 class="reveal">Mapeamento com IA mais previsível</h2>
+                        <ul class="items reveal">
+                            <li data-n="01">Transformação gerada do zero, com o campo de origem<span class="tag">MW-92533 · MW-92534</span></li>
+                            <li data-n="02">Campo que só formata vira ligação direta<span class="tag">MW-92558</span></li>
+                            <li data-n="03">Mudar o payload do outbound não quebra as ligações<span class="tag">MW-92535</span></li>
+                        </ul>
+                    </div>
+                    <figure class="reveal">
+                        <img class="shot" src="assets/transformacao-modal.png" alt="Modal de transformação com prompt em destaque e prévia somente leitura">
+                        <figcaption>Modal de transformação: prompt em destaque, prévia só leitura</figcaption>
+                    </figure>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>10 / 13</span></div>
+            </section>
+
+            <!-- === 11. iPaaS: OUTBOUND REALIGN SCREENSHOTS === -->
+            <section class="slide">
+                <div class="inner two-shots">
+                    <h2 class="reveal">Payload mudou, ligações continuam</h2>
+                    <figure class="reveal">
+                        <img class="shot" src="assets/mapeamento-campo-novo.png" alt="Mapeamento com o campo moeda novo sem ligação e as demais ligações mantidas">
+                        <figcaption><b>1.</b> <code>moeda</code> entra sem ligação e as outras continuam</figcaption>
+                    </figure>
+                    <figure class="reveal">
+                        <img class="shot" src="assets/mapeamento-ia-liga.png" alt="Mapeamento depois de refazer com IA, com moeda ligado">
+                        <figcaption><b>2.</b> Refazer com IA liga o campo novo</figcaption>
+                    </figure>
+                </div>
+                <div class="footer"><span>MW-92535</span><span>11 / 13</span></div>
+            </section>
+
+            <!-- === 12. iPaaS: ALSO IN THE PERIOD === -->
+            <section class="slide">
+                <div class="inner">
+                    <div class="kicker reveal">03 — Partner Portal (iPaaS)</div>
+                    <h2 class="reveal">Também no período</h2>
+                    <div class="cols-3 reveal">
+                        <div>
+                            <h3>Usabilidade</h3>
+                            <p class="muted">Filtros e ordenação em My Integrations</p>
+                            <p class="muted">KPIs do mapeamento viram filtros</p>
+                            <p class="tag">MW-89268 · MW-89272</p>
+                        </div>
+                        <div>
+                            <h3>Qualidade</h3>
+                            <p class="muted">E2E das 3 integrações: Inbound, Outbound e Product Search</p>
+                            <p class="tag">MW-90827 a MW-90829</p>
+                        </div>
+                        <div>
+                            <h3>Operação</h3>
+                            <p class="muted">Golden Signals e dashboard FinOps do wizard</p>
+                            <p class="muted">Log do BFF ligado ao trace</p>
+                            <p class="tag">MW-88298 · MW-91294</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>12 / 13</span></div>
+            </section>
+
+            <!-- === 13. CLOSING === -->
+            <section class="slide red">
+                <div class="inner">
+                    <div class="kicker reveal">Resumo</div>
+                    <ul class="close-list reveal">
+                        <li><b>Login:</b> 97% de cobertura, 65 E2E, Sonar zerado e observabilidade sem dado pessoal</li>
+                        <li><b>iPaaS:</b> Integration Hub pra todos e mapeamento com IA mais previsível</li>
+                        <li><b>Identity:</b> menos ruído nos logs de erro e métricas de negócio</li>
+                    </ul>
+                    <h1 class="close-q reveal">Perguntas?</h1>
+                </div>
+                <div class="footer"><span>Review 03.11.2026</span><span>13 / 13</span></div>
+            </section>
+
+        </main>
+    </div>
+
+    <div class="deck-controls" id="deckControls">01 / 13</div>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           Arrows / Space / PageUp / PageDown / Home / End, swipe, wheel
+           =========================================== */
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.stage = document.getElementById('deckStage');
+                this.progress = document.getElementById('progress');
+                this.counter = document.getElementById('deckControls');
+                this.current = 0;
+                this.wheelLock = false;
+                this.setupStageScale();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.show(0);
+            }
+
+            setupStageScale() {
+                const scale = () => {
+                    const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * f) / 2;
+                    const y = (window.innerHeight - 1080 * f) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+                };
+                scale();
+                window.addEventListener('resize', scale);
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.isContentEditable) return;
+                    const next = ['ArrowRight', 'ArrowDown', ' ', 'PageDown'];
+                    const prev = ['ArrowLeft', 'ArrowUp', 'PageUp'];
+                    if (next.includes(e.key)) { e.preventDefault(); this.show(this.current + 1); }
+                    else if (prev.includes(e.key)) { e.preventDefault(); this.show(this.current - 1); }
+                    else if (e.key === 'Home') this.show(0);
+                    else if (e.key === 'End') this.show(this.slides.length - 1);
+                });
+            }
+
+            setupTouchNav() {
+                let startX = null;
+                document.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    if (startX === null) return;
+                    const dx = e.changedTouches[0].clientX - startX;
+                    if (Math.abs(dx) > 50) this.show(this.current + (dx < 0 ? 1 : -1));
+                    startX = null;
+                });
+            }
+
+            setupWheelNav() {
+                document.addEventListener('wheel', (e) => {
+                    if (this.wheelLock || Math.abs(e.deltaY) < 30) return;
+                    this.wheelLock = true;
+                    this.show(this.current + (e.deltaY > 0 ? 1 : -1));
+                    setTimeout(() => { this.wheelLock = false; }, 700);
+                }, { passive: true });
+            }
+
+            show(index) {
+                this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+                this.slides.forEach((s, i) => {
+                    s.classList.toggle('active', i === this.current);
+                    s.classList.toggle('visible', i === this.current);
+                });
+                const n = String(this.current + 1).padStart(2, '0');
+                const total = String(this.slides.length).padStart(2, '0');
+                this.counter.textContent = `${n} / ${total}`;
+                this.progress.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+            }
+        }
+
+        const deck = new SlidePresentation();
+
+        /* ===========================================
+           INLINE EDITOR
+           E or top-left corner toggles edit mode.
+           Edits persist in localStorage; Ctrl+S downloads the edited HTML.
+           =========================================== */
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.key = 'review-2026-11-03-edits';
+                this.targets = document.querySelectorAll(
+                    '.deck-stage h1, .deck-stage h2, .deck-stage h3, .deck-stage p, .deck-stage li, ' +
+                    '.deck-stage .kicker, .deck-stage .stat-num, .deck-stage .stat-label, .deck-stage .big-num, ' +
+                    '.deck-stage figcaption, .deck-stage .live-pill, .deck-stage .footer span'
+                );
+                this.restore();
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+                document.getElementById('editToggle').classList.toggle('active', this.isActive);
+                this.targets.forEach((el) => el.setAttribute('contenteditable', String(this.isActive)));
+                if (!this.isActive) this.save();
+            }
+
+            save() {
+                try {
+                    localStorage.setItem(this.key, JSON.stringify([...this.targets].map((el) => el.innerHTML)));
+                } catch (e) { /* storage unavailable: edits stay in this tab only */ }
+            }
+
+            restore() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(this.key) || 'null');
+                    if (Array.isArray(saved) && saved.length === this.targets.length) {
+                        this.targets.forEach((el, i) => { el.innerHTML = saved[i]; });
+                    }
+                } catch (e) { /* ignore broken or blocked storage */ }
+            }
+
+            download() {
+                if (this.isActive) this.toggleEditMode();
+                const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+                a.download = 'slides.html';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }
+        }
+
+        const editor = new InlineEditor();
+        const editToggle = document.getElementById('editToggle');
+        const hotzone = document.querySelector('.edit-hotzone');
+        let hideTimeout = null;
+
+        editToggle.addEventListener('click', () => editor.toggleEditMode());
+        hotzone.addEventListener('click', () => editor.toggleEditMode());
+        hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+        hotzone.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
+        });
+        editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+        editToggle.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); editor.download(); return; }
+            if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) editor.toggleEditMode();
+        });
+    </script>
+</body>
+</html>
