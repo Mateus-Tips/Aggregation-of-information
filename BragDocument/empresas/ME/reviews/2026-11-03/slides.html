@@ -18,7 +18,8 @@
         :root {
             --ink: #0d0d0d;
             --paper: #ffffff;
-            --red: #ff3300;
+            --accent: #0b2f8a;
+            --accent-light: #7fa6ff;
             --muted: #6b6b6b;
             --grid-line: #efefef;
 
@@ -177,9 +178,9 @@
             background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
         }
 
-        .slide.red {
+        .slide.brand {
             color: var(--paper);
-            background-color: var(--red);
+            background-color: var(--accent);
             background-image: linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
         }
 
@@ -200,7 +201,7 @@
             font-size: 26px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: var(--red);
+            color: var(--accent);
             display: flex;
             align-items: center;
             gap: 18px;
@@ -211,12 +212,12 @@
             content: "";
             width: 22px;
             height: 22px;
-            background: var(--red);
+            background: var(--accent);
         }
 
         .dark .kicker,
-        .red .kicker { color: var(--paper); }
-        .red .kicker::before { background: var(--paper); }
+        .brand .kicker { color: var(--paper); }
+        .brand .kicker::before { background: var(--paper); }
 
         .footer {
             position: absolute;
@@ -236,7 +237,7 @@
         }
 
         .dark .footer { color: rgba(255, 255, 255, 0.5); }
-        .red .footer { color: rgba(255, 255, 255, 0.75); }
+        .brand .footer { color: rgba(255, 255, 255, 0.75); }
 
         /* ===========================================
            TYPOGRAPHY
@@ -262,8 +263,8 @@
             color: var(--muted);
         }
 
-        .dark .tag, .red .tag { color: rgba(255, 255, 255, 0.65); }
-        .accent { color: var(--red); }
+        .dark .tag, .brand .tag { color: rgba(255, 255, 255, 0.65); }
+        .accent { color: var(--accent); }
 
         /* ===========================================
            ANIMATIONS
@@ -301,7 +302,7 @@
             top: 0;
             width: 480px;
             height: 640px;
-            background: var(--red);
+            background: var(--accent);
         }
 
         .title-block span {
@@ -337,7 +338,7 @@
             font-size: 28px;
         }
 
-        .fronts span::before { content: "■ "; color: var(--red); }
+        .fronts span::before { content: "■ "; color: var(--accent); }
 
         /* ===========================================
            OVERVIEW / STAT GRIDS
@@ -361,7 +362,7 @@
         .stat-num {
             font-size: 168px;
             line-height: 0.95;
-            color: var(--red);
+            color: var(--accent);
             margin-bottom: 20px;
             white-space: nowrap;
         }
@@ -409,7 +410,7 @@
             font-family: var(--font-display);
             font-weight: 800;
             font-size: 34px;
-            color: var(--red);
+            color: var(--accent);
         }
 
         .items .tag { display: block; margin-top: 6px; }
@@ -420,7 +421,7 @@
             display: block;
             width: 100%;
             border: 3px solid var(--ink);
-            box-shadow: 18px 18px 0 var(--red);
+            box-shadow: 18px 18px 0 var(--accent);
             background: var(--paper);
         }
 
@@ -438,12 +439,12 @@
             align-items: center;
             gap: 16px;
             padding: 14px 28px;
-            border: 3px solid var(--red);
+            border: 3px solid var(--accent);
             font-family: var(--font-display);
             font-weight: 800;
             font-size: 30px;
             letter-spacing: 0.16em;
-            color: var(--red);
+            color: var(--accent);
             margin-bottom: 64px;
         }
 
@@ -452,9 +453,13 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: var(--red);
+            background: var(--accent);
             animation: pulse 1.4s ease-in-out infinite;
         }
+
+        /* Dark slides: lighter blue keeps contrast on near-black */
+        .dark .live-pill { border-color: var(--accent-light); color: var(--accent-light); }
+        .dark .live-pill::before { background: var(--accent-light); }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -465,7 +470,7 @@
 
         .live-points { list-style: none; }
         .live-points li { font-size: 40px; padding: 8px 0; }
-        .live-points li::before { content: "→ "; color: var(--red); font-weight: 700; }
+        .live-points li::before { content: "→ "; color: var(--accent-light); font-weight: 700; }
 
         /* ===========================================
            BIG NUMBER SLIDE (Identity)
@@ -481,7 +486,7 @@
         .big-num {
             font-size: 380px;
             line-height: 0.8;
-            color: var(--red);
+            color: var(--accent);
         }
 
         .big-row p { font-size: 50px; line-height: 1.2; font-weight: 600; }
@@ -514,10 +519,10 @@
         .two-shots h2 { grid-column: 1 / -1; margin-bottom: 8px; font-size: 80px; }
         .two-shots .shot { height: 560px; object-fit: cover; object-position: top left; }
         .two-shots figcaption { color: var(--ink); font-size: 28px; }
-        .two-shots figcaption b { color: var(--red); font-family: var(--font-display); }
+        .two-shots figcaption b { color: var(--accent); font-family: var(--font-display); }
 
         /* ===========================================
-           CLOSING SLIDE (red)
+           CLOSING SLIDE (blue)
            =========================================== */
         .close-list { list-style: none; margin-bottom: 80px; }
 
@@ -539,7 +544,7 @@
             left: 0;
             top: 0;
             height: 5px;
-            background: var(--red);
+            background: var(--accent);
             z-index: 1000;
             transition: width 0.4s var(--ease-out-expo);
         }
@@ -577,7 +582,7 @@
             width: 44px;
             height: 44px;
             border: 0;
-            background: var(--red);
+            background: var(--accent);
             color: #fff;
             font-size: 20px;
             cursor: pointer;
@@ -594,7 +599,7 @@
         }
 
         .editing [contenteditable="true"] {
-            outline: 2px dashed rgba(255, 51, 0, 0.6);
+            outline: 2px dashed rgba(11, 47, 138, 0.6);
             outline-offset: 6px;
         }
     </style>
@@ -846,7 +851,7 @@
             </section>
 
             <!-- === 13. CLOSING === -->
-            <section class="slide red">
+            <section class="slide brand">
                 <div class="inner">
                     <div class="kicker reveal">Resumo</div>
                     <ul class="close-list reveal">
