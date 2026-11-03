@@ -477,7 +477,7 @@
            =========================================== */
         .big-row {
             display: grid;
-            grid-template-columns: 820px 1fr;
+            grid-template-columns: 700px 1fr;
             gap: 80px;
             align-items: center;
             margin-bottom: 40px;
@@ -501,6 +501,31 @@
 
         .pair p { font-size: 30px; }
         .pair .tag { margin-top: 14px; }
+
+        /* Bullet lists (Identity slide) */
+        .bullets { list-style: none; }
+
+        .bullets li {
+            position: relative;
+            font-size: 30px;
+            line-height: 1.35;
+            padding: 5px 0 5px 34px;
+        }
+
+        .bullets li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+        }
+
+        .bullets b { font-family: var(--font-display); color: var(--accent); }
+
+        .bullets.big li { font-size: 44px; font-weight: 600; padding: 4px 0 4px 40px; }
+        .bullets.big li::before { top: 26px; width: 16px; height: 16px; }
 
         /* ===========================================
            STATEMENT SLIDE (iPaaS)
@@ -759,17 +784,31 @@
                     <div class="kicker reveal">02 — ME Identity</div>
                     <div class="big-row reveal">
                         <div class="big-num">97%</div>
-                        <p>dos logs de Error do Identity em prod vinham de um único webhook</p>
+                        <ul class="bullets big">
+                            <li>dos logs de Error do Identity em prod (7 dias)</li>
+                            <li>vinham do webhook de expirar convite</li>
+                            <li>e não eram erro de verdade</li>
+                        </ul>
                     </div>
                     <div class="pair reveal">
                         <div>
                             <h3>Webhook de expirar convite</h3>
-                            <p class="muted">O Dispatcher chama o webhook 7 dias depois do convite. Se ele já tinha sido aceito, cancelado ou expirado, a API devolvia 422 e o Dispatcher tentava de novo até 10 vezes, cada uma com log de Error. Agora o convite é ignorado: responde 202 e fica só um log de Information.</p>
+                            <ul class="bullets">
+                                <li>Dispatcher chama o webhook 7 dias depois do convite</li>
+                                <li>Convite já aceito, cancelado ou expirado: API devolvia 422</li>
+                                <li>Dispatcher tentava até 10 vezes, cada uma com log de Error</li>
+                                <li><b>Agora:</b> ignora, responde 202 e loga só Information</li>
+                            </ul>
                             <p class="tag">MW-92454</p>
                         </div>
                         <div>
                             <h3>Métricas de negócio</h3>
-                            <p class="muted">As métricas de usuário criado, atualizado e excluído nunca eram exportadas, porque faltava registrar o meter no OpenTelemetry. Agora chegam no Prometheus, com teste de integração garantindo. O <code>/metrics</code>, que estava registrado duas vezes, ficou com uma origem só.</p>
+                            <ul class="bullets">
+                                <li>Usuário criado, atualizado e excluído nunca eram exportados</li>
+                                <li>Faltava registrar o meter no OpenTelemetry</li>
+                                <li><b>Agora:</b> chegam no Prometheus, com teste de integração</li>
+                                <li><code>/metrics</code> registrado duas vezes: ficou um só</li>
+                            </ul>
                             <p class="tag">MW-92453</p>
                         </div>
                     </div>
