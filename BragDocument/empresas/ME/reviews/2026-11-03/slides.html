@@ -480,11 +480,11 @@
             grid-template-columns: 820px 1fr;
             gap: 80px;
             align-items: center;
-            margin-bottom: 72px;
+            margin-bottom: 40px;
         }
 
         .big-num {
-            font-size: 380px;
+            font-size: 320px;
             line-height: 0.8;
             color: var(--accent);
         }
@@ -499,7 +499,8 @@
             padding-top: 32px;
         }
 
-        .pair p { font-size: 32px; }
+        .pair p { font-size: 30px; }
+        .pair .tag { margin-top: 14px; }
 
         /* ===========================================
            STATEMENT SLIDE (iPaaS)
@@ -763,12 +764,12 @@
                     <div class="pair reveal">
                         <div>
                             <h3>Webhook de expirar convite</h3>
-                            <p class="muted">Ignora convite que não está mais pendente: 202 em vez de 422 e sem 10 retries</p>
+                            <p class="muted">O Dispatcher chama o webhook 7 dias depois do convite. Se ele já tinha sido aceito, cancelado ou expirado, a API devolvia 422 e o Dispatcher tentava de novo até 10 vezes, cada uma com log de Error. Agora o convite é ignorado: responde 202 e fica só um log de Information.</p>
                             <p class="tag">MW-92454</p>
                         </div>
                         <div>
                             <h3>Métricas de negócio</h3>
-                            <p class="muted">Usuário criado, atualizado etc. chegam no Prometheus; <code>/metrics</code> duplicado saiu</p>
+                            <p class="muted">As métricas de usuário criado, atualizado e excluído nunca eram exportadas, porque faltava registrar o meter no OpenTelemetry. Agora chegam no Prometheus, com teste de integração garantindo. O <code>/metrics</code>, que estava registrado duas vezes, ficou com uma origem só.</p>
                             <p class="tag">MW-92453</p>
                         </div>
                     </div>
@@ -859,7 +860,6 @@
                         <li><b>iPaaS:</b> Integration Hub pra todos e mapeamento com IA mais previsível</li>
                         <li><b>Identity:</b> menos ruído nos logs de erro e métricas de negócio</li>
                     </ul>
-                    <h1 class="close-q reveal">Perguntas?</h1>
                 </div>
                 <div class="footer"><span>Review 03.11.2026</span><span>13 / 13</span></div>
             </section>
