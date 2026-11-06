@@ -34,7 +34,7 @@ integration-hub: `MappingAstService`, `MappingComposer`, testes do compose e da 
 ## Resultado / impacto
 O mapeamento não perde mais campo nesse caso e não gera warning. Vale pro mapeamento automático e pra transformação, sem mudança de contrato nem de front. De quebra, um `[{}]` vazio ao lado de uma projeção não apaga mais a projeção, o que antes acontecia dependendo da ordem.
 
-Fica na MW-92890: o `JsonataSourceWriter` acrescenta parênteses em `Itens.(...)` a cada compose/decompose.
+Os parênteses que o `JsonataSourceWriter` acrescentava em `Itens.(...)` a cada compose/decompose foram corrigidos na [MW-92890](../2026-11-06_MW-92890_jsonata-parenteses-round-trip/README.md).
 
 ## Imagens
 Sem prints.
