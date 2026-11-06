@@ -36,7 +36,7 @@ me-identity: `Common/Logging/SensitiveDataMasker`, commands de usuário, de cont
 ## Resultado / impacto
 O log de erro dos commands do Identity não mostra mais senha, secret, token nem telefone, em nenhum ambiente. Como o teste varre todos os requests, um request novo com campo sensível sem máscara quebra o build.
 
-Fica pendente: o `PhoneService` ainda grava o telefone no texto do log.
+O telefone que o `PhoneService` ainda gravava no log saiu na [MW-93072](../2026-11-06_MW-93072_telefone-fora-log-phoneservice/README.md).
 
 ## Imagens
 Sem prints.
