@@ -30,7 +30,7 @@ Deixar a criação a partir de template ao alcance direto na lista de integraç�
 partner-portal: tela Minhas integrações, componente `EmptyState`
 
 ## Resultado / impacto
-O usuário cria uma integração nova a partir de template direto do grid, inclusive com filtro aplicado.
+O usuário cria uma integração nova a partir de template direto do grid.
 
 ## Imagens
 ![Card fixo no início do grid](01-create-card.png)
